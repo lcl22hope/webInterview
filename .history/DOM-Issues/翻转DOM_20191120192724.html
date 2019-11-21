@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html>  
+    <head>
+
+
+        <!-- 历史原因 之前空白被忽略 -->
+        <title>测试</title>
+
+
+
+
+       
+        <script>
+            console.log('test')
+        </script>
+    </head>
+
+
+
+    <body>
+        <ul id="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <br/>
+        <br/>
+        <div id="div">这个一个div</div>
+        <input type="button" id="reverseBtn"
+        <script>
+            let list = document.getElementById('list')
+            // let newLi = document.createElement('li')
+            // newLi.innerHTML = 'hello, world';
+            // list.insertBefore(newLi, list.children[1]);
+            // list.insertBefore(newLi, list.firstChild);
+
+
+            // let div = document.getElementById('div');
+            // div.insertAdjacentHTML('beforebegin', '<p>beforebegin</p>')
+            // div.insertAdjacentHTML('afterbegin', '<p>afterbegin</p>')
+            // div.insertAdjacentHTML('beforeend', '<p>beforeend</p>')
+            // div.insertAdjacentHTML('afterend', '<p>afterend</p>')
+            function reverseChildNodes(node) {
+                let frag = node.ownerDocument.createDocumentFragment();
+                while(node.lastChild) {
+                    frag.appendChild(node.lastChild)
+                }
+                node.appendChild(frag)
+            }
+
+
+        </script>
+    </body>
+</html>
