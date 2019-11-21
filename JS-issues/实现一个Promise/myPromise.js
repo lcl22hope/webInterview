@@ -38,16 +38,80 @@ class MyPromise {
         }
     }
 
-    then(onFulfilled, onRejected) {
-        
-        if (this.state == FULFILLED) {
-            onFulfilled(this.value);
-        } else if (this.state == REJECTED){
-            onRejected(this.error);
+    resolvePromise(nextPromise, lastResult, resolve, reject) {
+        if (nextPromise == lastResult) {
+            reject(new TypeError('Chaining Cycle'));
+        } 
+        if (lastResult && typeof lastResult === 'object' || typeof x === 'function') {
+            let used;
+            try {
+                //如果还是一个promise
+                let then = lastResult.then; 
+                if (typeof then === 'function') {
+                    then.call(lastResult, (result) => {
+                        if (used) return;
+                        used = true;
+                        this.resolvePromise(nextPromise, result, resolve, reject);
+                    }, (err) => {
+                        if (used) return;
+                        used = true;
+                        reject(err);
+                    })
+                } else {
+                    if (used) return;
+                    used = true;
+                    resolve(lastResult)
+                }
+            } catch(error) {
+                if (used) return;
+                used = true;
+                reject(error);
+            }
         } else {
-            this.onFulfilledCallbacks.push(onFulfilled)
-            this.onRejectedCallbacks.push(onRejected)
+            resolve(lastResult);
         }
+    }
+
+    then(onFulfilled, onRejected) {
+        const nextPromise = new MyPromise((resolve, reject) => {
+            if (this.state == FULFILLED) {
+                try {
+                    let lastResolved = onFulfilled(this.value)
+                    this.resolvePromise(nextPromise, lastResolved, resolve, reject);
+                } catch (error) {
+                    reject(error);
+                }
+            } else if (this.state == REJECTED){
+                try {
+                    let lastRejected = onRejected(this.error);
+                    this.resolvePromise(nextPromise, lastRejected, resolve, reject);
+                } catch(error) {
+                    reject(error);
+                }
+            } else {
+                this.onFulfilledCallbacks.push(()=>{
+                    try {
+                        let lastResolved = onFulfilled(this.value)
+                        this.resolvePromise(nextPromise, lastResolved, resolve, reject);
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+                this.onRejectedCallbacks.push(() => {
+                    try {
+                        let lastRejected = onRejected(this.error);
+                        this.resolvePromise(nextPromise, lastRejected, resolve, reject);
+                    } catch(error) {
+                        reject(error);
+                    }
+                });
+            }
+        })
+        return nextPromise;
+    }
+
+    catch(onRejected){ 
+        return this.then(null, onRejected);
     }
     
 }
