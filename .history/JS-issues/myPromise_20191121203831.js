@@ -1,4 +1,0 @@
-
-class MyPromise {
-    constructor(prop)
-}
