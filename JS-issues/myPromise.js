@@ -25,6 +25,14 @@ class MyPromise {
             reject(error);
         }
     }
+
+    then(onFulfilled, onRejected) {
+        if (this.state == FULFILLED) {
+            onFulfilled(this.value);
+        } else if (this.state == REJECTED){
+            onRejected(this.error);
+        }
+    }
     
 }
 
