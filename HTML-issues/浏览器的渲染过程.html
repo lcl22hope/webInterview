@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 通过link引用的css文件 -->
+    <!-- <link href="a.css" rel="stylesheet"> -->
+    <!-- 通过<style>标记引入的css -->
+    <style>
+        /* body {
+            background: blue;
+        } */
+
+        div {
+            width: 100px;
+            height: 100px;
+            overflow: auto;
+            background: lightgoldenrodyellow;
+        }
+    </style>
+    <title>测试style</title>
+</head>
+<body>
+    <!-- 通过元素样式引入的css -->
+    <!-- <p><span style="display: block;">测试</span>测试的测试</p> -->
+    <div>
+        <p style="z-index: 2;">所以元素有了层叠上下文的属性或者需要被剪裁，那么就会被提升成为单独一层，你可以参看下图：</p>
+        <p style="z-index: 4;">从上图我们可以看到，document层上有A和B层，而B层之上又有两个图层。这些图层组织在一起也是一颗树状结构。</p>
+        <p style="z-index: 8;">图层树是基于布局树来创建的，为了找出哪些元素需要在哪些层中，渲染引擎会遍历布局树来创建层树（Update LayerTree）。</p>
+    </div>
+</body>
+</html>
